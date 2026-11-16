@@ -1,4 +1,5 @@
 import random
+<<<<<<< HEAD
 import sys
 
 from lib import write_grid
@@ -45,6 +46,36 @@ def calculer_generation_suivante(grille):
             nouvelle_grille[i][j] = nouvelle_valeur_cellule(grille[i][j], nb_voisins)
     return nouvelle_grille
 
+=======
+import argparse
+
+from lib import write_grid
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-n", "--nb_cells", type=int, default=10, 
+                        help="nombre de cellules par côté pour un grille aléatoire")
+    parser.add_argument("-m", "--max_iterations", type=int, default=20, 
+                        help="numéro de la dernière itération à calculer")
+    parser.add_argument("-s", "--seed", type=int, default=42, 
+                        help="graine de générateur de nombres aléatoires")
+    parser.add_argument("-o", "--output_directory", type=str, default='outputs', 
+                        help="dossier dans lequel écrire les images")
+    parser.add_argument("-t", "--output_type", choices=['image','text'], default='image', 
+                        help="type de sortie image ou text")
+    parser.add_argument("-p", "--periodic", action='store_true', 
+                        help="active les conditions aux limites périodiques ") 
+
+    args = parser.parse_args() 
+
+    if args.nb_cells <= 0:
+        parser.error("Le nombre de cellules doit être supérieur à 0")
+    if args.max_iterations < 0:
+        parser.error("Le nombre d'itération ne peut pas être négatif")
+    return args
+    
+>>>>>>> 34b15ca (feat(cli): ajouter arguments)
 
 def main():
     nb_cells = 50
