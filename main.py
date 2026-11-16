@@ -1,8 +1,13 @@
 import random
-<<<<<<< HEAD
+import argparse
 import sys
 
 from lib import write_grid
+
+def Generation_de_grille(lignes,colonnes, seed_val,densite):
+    rng= random.Random(seed_val)
+    grille=[1 if rng.random() < densite else 0 for _ in range(colonnes)for _ in range(lignes)]
+    return grille
 
 def get_cellule(grille, i, j, periodique=False):
 
@@ -46,10 +51,6 @@ def calculer_generation_suivante(grille):
             nouvelle_grille[i][j] = nouvelle_valeur_cellule(grille[i][j], nb_voisins)
     return nouvelle_grille
 
-=======
-import argparse
-
-from lib import write_grid
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -75,7 +76,7 @@ def parse_args():
         parser.error("Le nombre d'itération ne peut pas être négatif")
     return args
     
->>>>>>> 34b15ca (feat(cli): ajouter arguments)
+
 
 def main():
     nb_cells = 50
