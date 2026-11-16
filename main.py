@@ -44,14 +44,14 @@ def get_cellule(grille, i, j, periodique=False):
 
     return grille[i][j]
 
-def compte_voisins(grille, x, y):
+def compte_voisins(grille, x, y,periodique=False):
     voisins = 0
     lignes = len(grille)
     colonnes = len(grille[0])
     for i in range(x - 1, x + 2):
         for j in range(y - 1, y + 2):
-            if (i, j) != (x, y) and 0 <= i < lignes and 0 <= j < colonnes:
-                voisins += grille[i][j]
+           if (i, j) != (x, y):
+                voisins += get_cellule(grille, i, j, periodique)
     return voisins
 
 def nouvelle_valeur_cellule(etat_actuel, nb_voisins):
@@ -60,13 +60,13 @@ def nouvelle_valeur_cellule(etat_actuel, nb_voisins):
     else:
         return 1 if nb_voisins == 3 else 0
 
-def calculer_generation_suivante(grille):
+def calculer_generation_suivante(grille,periodique=False):
     lignes = len(grille)
     colonnes = len(grille[0])
     nouvelle_grille = [[0 for _ in range(colonnes)] for _ in range(lignes)]
     for i in range(lignes):
         for j in range(colonnes):
-            nb_voisins = compte_voisins(grille, i, j)
+            nb_voisins = compte_voisins(grille, i, j, periodique)
             nouvelle_grille[i][j] = nouvelle_valeur_cellule(grille[i][j], nb_voisins)
     return nouvelle_grille
 
