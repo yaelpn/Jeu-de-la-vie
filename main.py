@@ -3,7 +3,22 @@ import sys
 
 from lib import write_grid
 
-<<<<<<< HEAD
+def get_cellule(grille, i, j, periodique=False):
+
+    nb_lignes = len(grille)
+    nb_cols = len(grille[0])
+
+    if periodique:
+        
+        i = i % nb_lignes
+        j = j % nb_cols
+    else:
+        
+        if not (0 <= i < nb_lignes and 0 <= j < nb_cols):
+            return 0
+
+    return grille[i][j]
+
 def compte_voisins(grille, x, y):
     voisins = 0
     lignes = len(grille)
@@ -30,23 +45,6 @@ def calculer_generation_suivante(grille):
             nouvelle_grille[i][j] = nouvelle_valeur_cellule(grille[i][j], nb_voisins)
     return nouvelle_grille
 
-=======
-def get_cellule(grille, i, j, periodique=False):
-
-    nb_lignes = len(grille)
-    nb_cols = len(grille[0])
-
-    if periodique:
-        
-        i = i % nb_lignes
-        j = j % nb_cols
-    else:
-        
-        if not (0 <= i < nb_lignes and 0 <= j < nb_cols):
-            return 0
-
-    return grille[i][j]
->>>>>>> 7c74c03 (feat(grille): ajout de la gestion des conditions de limites)
 
 def main():
     nb_cells = 50
