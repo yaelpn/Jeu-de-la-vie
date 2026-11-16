@@ -23,10 +23,7 @@ def lire_grille_stdin():
 
     return [[int(c) for c in r] for r in rangees]
 
-def Generation_de_grille(lignes,colonnes, seed_val,densite):
-    rng= random.Random(seed_val)
-    grille=[1 if rng.random() < densite else 0 for _ in range(colonnes)for _ in range(lignes)]
-    return grille
+
 
 def get_cellule(grille, i, j, periodique=False):
 
@@ -160,18 +157,18 @@ def main():
             matrix = calculer_generation_suivante(matrix, args.periodic)
         sortie_texte(matrix, args.max_iterations)
         
-        #nb_cells = 50
+    nb_cells = 50
     
-        #rng = random.Random(4200)
-    
-        #matrix = [
-            #[rng.choice([0, 1]) for _ in range(nb_cells)]
-            #for _ in range(nb_cells)
-        #]
-    
-        #iter = 0
-        #filename = f"outputs/grid_{iter:04d}.png"
-        #write_grid(matrix=matrix, filename=filename)
+    rng = random.Random(4200)
+        
+    matrix = [
+        [rng.choice([0, 1]) for _ in range(nb_cells)]
+        for _ in range(nb_cells)
+    ]
+        
+    iter = 0
+    filename = f"outputs/grid_{iter:04d}.png"
+    write_grid(matrix=matrix, filename=filename)
     
 if __name__ == "__main__":
         main()
