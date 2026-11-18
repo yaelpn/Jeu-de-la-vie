@@ -23,7 +23,14 @@ def lire_grille_stdin():
 
     return [[int(c) for c in r] for r in rangees]
 
+HEAD
+def Generation_de_grille(lignes, colonnes, seed_val=42, densite=0.5):
+    rng = random.Random(seed_val)
+    plateau = [1 if rng.random() < densite else 0 for _ in range(colonnes * lignes)]
+    return [plateau[i * colonnes:(i + 1) * colonnes] for i in range(lignes)]
 
+
+origin/main
 
 def get_cellule(grille, i, j, periodique=False):
 
@@ -41,13 +48,19 @@ def get_cellule(grille, i, j, periodique=False):
 
     return grille[i][j]
 
+HEAD
+def compte_voisins(grille, x, y, periodique=False):
+
 def compte_voisins(grille, x, y,periodique=False):
+origin/main
     voisins = 0
-    lignes = len(grille)
-    colonnes = len(grille[0])
     for i in range(x - 1, x + 2):
         for j in range(y - 1, y + 2):
+HEAD
+            if (i, j) != (x, y):
+
            if (i, j) != (x, y):
+origin/main
                 voisins += get_cellule(grille, i, j, periodique)
     return voisins
 
@@ -57,7 +70,11 @@ def nouvelle_valeur_cellule(etat_actuel, nb_voisins):
     else:
         return 1 if nb_voisins == 3 else 0
 
+HEAD
+def calculer_generation_suivante(grille, periodique=False):
+
 def calculer_generation_suivante(grille,periodique=False):
+origin/main
     lignes = len(grille)
     colonnes = len(grille[0])
     nouvelle_grille = [[0 for _ in range(colonnes)] for _ in range(lignes)]
