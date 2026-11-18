@@ -23,10 +23,14 @@ def lire_grille_stdin():
 
     return [[int(c) for c in r] for r in rangees]
 
+HEAD
 def Generation_de_grille(lignes, colonnes, seed_val=42, densite=0.5):
     rng = random.Random(seed_val)
     plateau = [1 if rng.random() < densite else 0 for _ in range(colonnes * lignes)]
     return [plateau[i * colonnes:(i + 1) * colonnes] for i in range(lignes)]
+
+
+origin/main
 
 def get_cellule(grille, i, j, periodique=False):
 
@@ -44,11 +48,19 @@ def get_cellule(grille, i, j, periodique=False):
 
     return grille[i][j]
 
+HEAD
 def compte_voisins(grille, x, y, periodique=False):
+
+def compte_voisins(grille, x, y,periodique=False):
+origin/main
     voisins = 0
     for i in range(x - 1, x + 2):
         for j in range(y - 1, y + 2):
+HEAD
             if (i, j) != (x, y):
+
+           if (i, j) != (x, y):
+origin/main
                 voisins += get_cellule(grille, i, j, periodique)
     return voisins
 
@@ -58,7 +70,11 @@ def nouvelle_valeur_cellule(etat_actuel, nb_voisins):
     else:
         return 1 if nb_voisins == 3 else 0
 
+HEAD
 def calculer_generation_suivante(grille, periodique=False):
+
+def calculer_generation_suivante(grille,periodique=False):
+origin/main
     lignes = len(grille)
     colonnes = len(grille[0])
     nouvelle_grille = [[0 for _ in range(colonnes)] for _ in range(lignes)]
@@ -95,7 +111,10 @@ def parse_args():
 
 
 def sortie_image(matrix, iteration, dossier):
-    os.makedirs(dossier, exist_ok=True)
+    try:
+        os.makedirs(dossier, exist_ok=True)
+    except OSError as e:
+        erreur(f"impossible de créer le dossier '{dossier}' : {e}")
     filename = os.path.join(dossier, f"grid_{iteration:04d}.png")
     write_grid(matrix=matrix, filename=filename)
 
@@ -104,12 +123,45 @@ def sortie_texte(matrix, iteration):
     print(f"iteration: {iteration}")
     for ligne in matrix:
         print(" ".join(str(c) for c in ligne))
-    
+
+
+def valider_grille(matrix):
+    if not isinstance(matrix, list) or len(matrix) == 0:
+        raise ValueError("la grille est vide")
+    n = len(matrix)
+    for i, ligne in enumerate(matrix):
+        if not isinstance(ligne, list) or len(ligne) == 0:
+            raise ValueError(f"la ligne {i} est vide ou mal formée")
+        if len(ligne) != n:
+            raise ValueError(
+                f"la grille doit être carrée : {n} lignes mais la ligne {i} "
+                f"contient {len(ligne)} cellules"
+            )
+        for j, cellule in enumerate(ligne):
+            if type(cellule) is not int or cellule not in (0, 1):
+                raise ValueError(
+                    f"cellule invalide en ({i}, {j}) : {cellule!r} "
+                    "(seuls 0 et 1 sont acceptés)"
+                )
+
+
+def erreur(message):
+    print(f"Erreur : {message}", file=sys.stderr)
+    sys.exit(1)
 
 
 def main():
     args = parse_args()
-    matrix = Generation_de_grille(args.nb_cells, args.seed)  
+    matrix = Generation_de_grille(args.nb_cells, args.seed) 
+
+    try:
+        if not sys.stdin.isatty():      # grille fournie via STDIN (pipe ou redirection)
+            matrix = lire_grille_stdin()
+        else:                           # sinon, grille aléatoire
+            matrix = Generation_de_grille(args.nb_cells, args.nb_cells, args.seed, 0.5)
+        valider_grille(matrix)
+    except ValueError as e:
+        erreur(e)
     
     
     if args.output_type == "image":
@@ -122,18 +174,18 @@ def main():
             matrix = calculer_generation_suivante(matrix, args.periodic)
         sortie_texte(matrix, args.max_iterations)
         
-        #nb_cells = 50
+    nb_cells = 50
     
-        #rng = random.Random(4200)
-    
-        #matrix = [
-            #[rng.choice([0, 1]) for _ in range(nb_cells)]
-            #for _ in range(nb_cells)
-        #]
-    
-        #iter = 0
-        #filename = f"outputs/grid_{iter:04d}.png"
-        #write_grid(matrix=matrix, filename=filename)
+    rng = random.Random(4200)
+        
+    matrix = [
+        [rng.choice([0, 1]) for _ in range(nb_cells)]
+        for _ in range(nb_cells)
+    ]
+        
+    iter = 0
+    filename = f"outputs/grid_{iter:04d}.png"
+    write_grid(matrix=matrix, filename=filename)
     
 if __name__ == "__main__":
         main()
