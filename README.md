@@ -136,10 +136,10 @@ Avec `-t text`, aucune image n'est écrite : seule la dernière itération est a
 
 ## Auteurs
 
-- [NOM Prénom, numéro étudiant]
-- [NOM Prénom, numéro étudiant]
-- [NOM Prénom, numéro étudiant]
-- [NOM Prénom, numéro étudiant]
+- [VONJY Zazirka, 45007336]
+- [SAID Darsia, 45001901]
+- [HERINIRINASOA Sariaka, 44006654]
+- [PANON Yael, 45004205]
 
 ## Liens utiles
 
